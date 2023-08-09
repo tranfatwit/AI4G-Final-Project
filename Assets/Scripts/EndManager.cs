@@ -5,36 +5,28 @@ using UnityEngine.SceneManagement;
 
 public class EndManager : MonoBehaviour
 {
-    //GameObject.GetComponent<Renderer>().material.color.a = 0.5f;
-    //private GameController scoreManager;
+    private ScoreManager scoreManager;
     // Start is called before the first frame update
     void Start()
     {
-        //scoreManager = GameObject.Find("GameController").GetComponent<GameController>();
-
+        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            // Add to score when the player hits a cube
-            //GameController.score++;
-            // Destroy the cube
-            //Destroy(gameObject);
-
-            //ignore above comments
+            //Add to score when the player finishes first
+            ScoreManager.score++;
+            //Load new scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         if (collision.gameObject.tag == "Character")
         {
-            // Add to score when the player hits a cube
-            //GameController.npcScore--;
-            // Destroy the cube
-            //Destroy(gameObject);
-
-            //ignore above comments
+            //Adds to score when the AI finishes first
+            ScoreManager.npcScore++;
+            //Load new scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
