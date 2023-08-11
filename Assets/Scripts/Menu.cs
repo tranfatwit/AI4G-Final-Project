@@ -14,4 +14,9 @@ public class Menu : MonoBehaviour
     public void OnExitButton() {
         Application.Quit();
     }
+
+    // Returns to start menu when user clicks in-game menu button
+    public void OnMenuButton() {
+        SceneManager.LoadScene(0);
+    }
 }
