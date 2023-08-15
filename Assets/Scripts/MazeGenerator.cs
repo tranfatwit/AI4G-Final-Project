@@ -12,7 +12,7 @@ public enum WallState {
     UP = 4,     //0100
     DOWN = 8,   //1000
 
-    VISITED = 128,  //1000 1111
+    VISITED = 128,  //1000 0000
 }
 
 public struct Position {
@@ -20,7 +20,7 @@ public struct Position {
     public int Y;
 }
 
-public struct neighbor {
+public struct Neighbor {
     public Position Position;
     public WallState SharedWall;
 }
@@ -41,13 +41,14 @@ public static class MazeGenerator {
         // here we make changes
         var rng = new System.Random(/*seed*/);
         var positionStack = new Stack<Position>();
-        var position = new Position { X = rng.Next(0, width), Y = rng.Next(0, height) };
+        var position = new Position { X = 0, Y = 0 };
 
         maze[position.X, position.Y] |= WallState.VISITED;  // 1000 1111
         positionStack.Push(position);
 
         while (positionStack.Count > 0) {
             var current = positionStack.Pop();
+            Debug.Log("Current: " + current.X + current.Y);
             var neighbors = GetUnvisitedNeighbors(current, maze, width, height);
 
             if (neighbors.Count > 0) {
@@ -68,12 +69,12 @@ public static class MazeGenerator {
         return maze;
     }
 
-    private static List<neighbor> GetUnvisitedNeighbors(Position p, WallState[,] maze, int width, int height) {
-        var list = new List<neighbor>();
+    private static List<Neighbor> GetUnvisitedNeighbors(Position p, WallState[,] maze, int width, int height) {
+        var list = new List<Neighbor>();
 
         if (p.X > 0) { // left 
             if (!maze[p.X - 1, p.Y].HasFlag(WallState.VISITED)) {
-                list.Add(new neighbor {
+                list.Add(new Neighbor {
                     Position = new Position {
                         X = p.X - 1,
                         Y = p.Y
@@ -85,7 +86,7 @@ public static class MazeGenerator {
 
         if (p.Y > 0) { // DOWN 
             if (!maze[p.X, p.Y - 1].HasFlag(WallState.VISITED)) {
-                list.Add(new neighbor {
+                list.Add(new Neighbor {
                     Position = new Position {
                         X = p.X,
                         Y = p.Y - 1
@@ -97,7 +98,7 @@ public static class MazeGenerator {
 
         if (p.Y < height - 1) {  // UP
             if (!maze[p.X, p.Y + 1].HasFlag(WallState.VISITED)) {
-                list.Add(new neighbor {
+                list.Add(new Neighbor {
                     Position = new Position {
                         X = p.X,
                         Y = p.Y + 1
@@ -109,7 +110,7 @@ public static class MazeGenerator {
 
         if (p.X < width - 1) { // RIGHT
             if (!maze[p.X + 1, p.Y].HasFlag(WallState.VISITED)) {
-                list.Add(new neighbor {
+                list.Add(new Neighbor {
                     Position = new Position {
                         X = p.X + 1,
                         Y = p.Y
@@ -131,6 +132,7 @@ public static class MazeGenerator {
                 maze[i, j] = initial;   //1111
             }
         }
+
         return ApplyRecursiveBacktracker(maze, width, height);
     }
 }
