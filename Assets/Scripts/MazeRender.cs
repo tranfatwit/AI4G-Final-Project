@@ -18,19 +18,23 @@ public class MazeRender : MonoBehaviour {
     [SerializeField]
     private Transform wallPrefab = null;
 
-    [SerializeField]
-    private Transform floorPrefab = null;
+    //[SerializeField]
+    //private Transform floorPrefab = null;
 
     [SerializeField]
     private Vector3 startingPosition = new Vector3(0, 0, 0);
 
+    [SerializeField]
+    private Vector3 startingPositionAI = new Vector3(0, 0, 0);
+
     // Start is called before the first frame update
     void Start() {
         var maze = MazeGenerator.Generate(width, height);
-        Draw(maze);
+        Draw(maze, startingPosition);
+        Draw(maze, startingPositionAI);
     }
 
-    private void Draw(WallState[,] maze) {
+    private void Draw(WallState[,] maze, Vector3 location) {
 
         //var floor = Instantiate(floorPrefab, transform);
         //floor.localScale = new Vector3(width, 1, height);
@@ -38,7 +42,7 @@ public class MazeRender : MonoBehaviour {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
 
-                var currentPosition = new Vector3(startingPosition.x + (i * size), startingPosition.y, startingPosition.z + (j * size));
+                var currentPosition = new Vector3(location.x + (i * size), location.y, location.z + (j * size));
 
                 var cell = maze[i, j];
                 var position = new Vector3(currentPosition.x, currentPosition.y, currentPosition.z);
