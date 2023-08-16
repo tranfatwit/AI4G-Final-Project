@@ -7,14 +7,15 @@ public class AIController : MonoBehaviour
 {
     public Transform goal;
 
-    void Start() {
-        NavMeshAgent agent = GetComponent<NavMeshAgent>();
-        agent.destination = new Vector3(goal.position.x,goal.position.y,goal.position.z+5);
-    }
+    int i=0;
 
     // Update is called once per frame
     void Update()
     {
-       
+       if(i==200){
+            NavMeshAgent agent = GetComponent<NavMeshAgent>();
+            agent.destination = new Vector3(goal.position.x,goal.position.y,goal.position.z+5);
+        }    
+        i++; 
     }
 }
